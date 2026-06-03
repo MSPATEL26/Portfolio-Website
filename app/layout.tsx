@@ -10,6 +10,7 @@ import LenisProvider from '@/components/LenisProvider'
 import PageTransition from '@/components/PageTransition'
 import { Analytics } from '@vercel/analytics/react'
 import GlassCursor from '@/components/GlassCursor'
+import Script from 'next/script'
 
 export const viewport: Viewport = {
   themeColor: '#0a0a0a',
@@ -85,6 +86,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-3XW3HB8BHF"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-3XW3HB8BHF');
+          `}
+        </Script>
       </head>
       <body className={comfortaa.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
