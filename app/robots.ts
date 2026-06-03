@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/'],
       },
     ],
-    sitemap: 'https://saqibpatel.me/sitemap.xml',
+    sitemap: 'https://www.saqibpatel.me/sitemap.xml',
   }
 }

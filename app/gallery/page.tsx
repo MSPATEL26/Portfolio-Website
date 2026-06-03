@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   X, ArrowLeft, ZoomIn, ImageOff,
   Heart, Download, Share2, ChevronLeft, ChevronRight, Eye,
@@ -265,7 +266,7 @@ export default function GalleryPage() {
 
           {/* Masonry grid */}
           {!loading && displayItems.length > 0 && (
-            <div className="columns-2 sm:columns-3 lg:columns-4 gap-3 space-y-3">
+            <div className="columns-2 sm:columns-3 lg:columns-4 gap-3">
               {displayItems.map((item, i) => {
                 const id = getPhotoId(item.src)
                 const likeCount = likes[id] ?? 0
@@ -301,6 +302,7 @@ export default function GalleryPage() {
       </div>
 
       {/* Lightbox */}
+      <AnimatePresence>
       {lightbox && (() => {
         const currentIndex = displayItems.findIndex((i) => i.src === lightbox.src)
         const prev  = displayItems[currentIndex - 1] ?? null
@@ -309,7 +311,10 @@ export default function GalleryPage() {
         const liked = likedSet.has(id)
 
         return (
-          <div
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="fixed inset-0 z-[999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
             onClick={() => setLightbox(null)}
             onTouchStart={onTouchStart}
@@ -326,7 +331,11 @@ export default function GalleryPage() {
             )}
 
             {/* Panel */}
-            <div
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="relative max-w-3xl w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
@@ -396,7 +405,7 @@ export default function GalleryPage() {
                   </a>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Next */}
             {next && (
@@ -407,9 +416,10 @@ export default function GalleryPage() {
                 <ChevronRight className="w-5 h-5" />
               </button>
             )}
-          </div>
+          </motion.div>
         )
       })()}
+      </AnimatePresence>
 
       {/* Copied toast */}
       <div
@@ -447,21 +457,14 @@ function PhotoCard({
     index % 5 === 0 ? 'aspect-[3/4]' : index % 3 === 0 ? 'aspect-square' : 'aspect-[4/3]'
 
   return (
-    <div
-      className={`break-inside-avoid relative overflow-hidden rounded-xl cursor-pointer group ${aspectClass}`}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: (index % 12) * 0.05, ease: 'easeOut' }}
+      whileHover={{ scale: 1.02, borderColor: `${accent}88` }}
+      className={`break-inside-avoid relative overflow-hidden rounded-xl cursor-pointer group w-full mb-3 inline-block ${aspectClass}`}
       style={{
         border: isPinned ? `1px solid ${accent}55` : '1px solid rgba(255,255,255,0.06)',
-        transition: 'border-color 0.2s, transform 0.2s',
-      }}
-      onMouseEnter={(e) => {
-        const el = e.currentTarget as HTMLDivElement
-        el.style.borderColor = `${accent}55`
-        el.style.transform = 'scale(1.02)'
-      }}
-      onMouseLeave={(e) => {
-        const el = e.currentTarget as HTMLDivElement
-        el.style.borderColor = isPinned ? `${accent}55` : 'rgba(255,255,255,0.06)'
-        el.style.transform = 'scale(1)'
       }}
       onClick={onClick}
     >
@@ -470,7 +473,7 @@ function PhotoCard({
           src={item.src}
           alt={item.title || item.category}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover object-[center_20%] transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           onError={() => setImgError(true)}
         />
@@ -529,6 +532,6 @@ function PhotoCard({
         .group:hover [data-liked="false"] { opacity: 1; }
         [data-liked="true"] { opacity: 1; }
       `}</style>
-    </div>
+    </motion.div>
   )
 }
