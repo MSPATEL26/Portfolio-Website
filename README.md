@@ -125,41 +125,7 @@ const developer = {
 
 ---
 
-## 🚀 Quick Start (Local Development)
 
-```bash
-# Clone the repository
-git clone https://github.com/Saqib-Patel/portfolio.git
-cd portfolio
-
-# Install dependencies
-npm install
-
-# Set up environment variables
-cp .env.local.example .env.local
-# Edit .env.local with your API keys (Groq, Upstash Redis)
-
-# Run the development server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### Deploy on Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-
-Set the following environment variables in your Vercel dashboard:
-
-| Variable | Required | Purpose |
-|----------|----------|---------|
-| `GROQ_API_KEY` | ✅ | KIRO chatbot |
-| `UPSTASH_REDIS_REST_URL` | ✅ | Analytics & visitor tracking |
-| `UPSTASH_REDIS_REST_TOKEN` | ✅ | Analytics & visitor tracking |
-| `ANALYTICS_COUNTRIES` | ❌ | Custom country breakdown |
-| `ANALYTICS_OS` | ❌ | Custom OS breakdown |
-
----
 
 ## 📬 Contact
 
